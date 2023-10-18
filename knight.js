@@ -78,41 +78,19 @@ const gameBoard = createBoard(8);
 class Square {
     constructor(coord, parent) {
         this.coord = coord;
-        this.parent = parent;
+        this.parent = parent || null;
     }
 }
 
-
-// function findShortestPath(start, end) {
-//     let q = [...start];
-
-
-//     while (q.length > 0) {
-//         let currentPosition = q.shift();
-
-//         if (currentPosition.coord === end.coord) {
-//             // found the final position
-//             // reconstruct the path
-
-//         }
-//     }
-// }
-
-
-
-
-
-
-
 function getPossibleNextMoves(currentSquare, visited) {
 
+    const possibleNextMoves = [];
     const directions = [
         [1, 2], [2, 1], [2, -1], [1, -2],
         [-1, -2], [-2, -1], [-2, 1], [-1, 2]
     ];
 
-    let possibleNextMoves = [];
-
+    // Create children of currentSquare with only the next squares that are within the gameboard and have not yet been visited
     for (let i = 0; i < directions.length; i++) {
         let coord = [currentSquare.coord[0] + directions[i][0], currentSquare.coord[1] + directions[i][1]];
 
@@ -122,15 +100,50 @@ function getPossibleNextMoves(currentSquare, visited) {
         }
     }
     
+    // Test whether coordinates are within the bounds of the gameboard or not
     function isInBoard(coord) {
-        return (coord[0] >= 0 && coord[0] < 8) && (coord[1] >= 0 && coord[1] < 8);
+        return (coord[0] >= 0 && coord[0] < 8) && (coord[1] >= 0 && coord[1] < 8); // change to boardSize instead of 8 at some point
     }
 
+    // Test whether coordinates have been visited or not
     function isVisited(coord, visited) {
         return visited.some(square => square.coord[0] === coord[0] && square.coord[1] === coord[1]);
     }
 
     return possibleNextMoves;
 }
+// console.log(getPossibleNextMoves({coord: [0, 0], parent: null}, []));
 
-console.log(getPossibleNextMoves({coord: [0, 0], parent: null}, []));
+
+function knightMoves(start, end) {
+    const rootSquare = new Square(start);
+    let q = [rootSquare];
+    let visited = [rootSquare];
+    
+    while(q.length > 0) {
+        let first = q[0];
+        if (first.coord[0] === end[0] && first.coord[1] === end[1]) {
+            // get the path and print it out
+            console.log(`Gotcha! The end coordinates are ${first.coord}`);
+            return;
+        }
+
+        // get the children of first
+        const children = getPossibleNextMoves(first, visited);
+        console.log(children);
+        // add the children to the q and to visited
+        // children.forEach((child) => {
+        //     q.push(child);
+        //     visited.push(child);
+        // });
+
+        q.push(...children);
+        visited.push(...children);
+
+        // remove first from q
+        q.shift();
+    
+    }
+}
+
+knightMoves([0,0], [1, 2]);
