@@ -6,6 +6,10 @@ class Square {
 }
 
 function knightMoves(start, end) {
+    if (!isInBoard(start) || !isInBoard(end)) {
+        console.log('=> Please provide start and end coordinates with x and y values equal to or greater than 0 and less than or equal to 7.')
+    }
+
     const rootSquare = new Square(start);
     let q = [rootSquare];
     let visited = [rootSquare];
@@ -37,7 +41,7 @@ function knightMoves(start, end) {
             [1, 2], [2, 1], [2, -1], [1, -2],
             [-1, -2], [-2, -1], [-2, 1], [-1, 2]
         ];
-        
+
         for (let i = 0; i < directions.length; i++) {
             let coord = [currentSquare.coord[0] + directions[i][0], currentSquare.coord[1] + directions[i][1]];
     
@@ -47,18 +51,19 @@ function knightMoves(start, end) {
             }
         }
         
-        function isInBoard(coord) {
-            return (coord[0] >= 0 && coord[0] < 8) && (coord[1] >= 0 && coord[1] < 8); // change to boardSize instead of 8 at some point
-        }
-
-        function isVisited(coord, visited) {
-            return visited.some(square => square.coord[0] === coord[0] && square.coord[1] === coord[1]);
-        }
         return possibleNextMoves;
+    }
+
+    function isInBoard(coord) {
+        return (coord[0] >= 0 && coord[0] < 8) && (coord[1] >= 0 && coord[1] < 8);
+    }
+
+    function isVisited(coord, visited) {
+        return visited.some(square => square.coord[0] === coord[0] && square.coord[1] === coord[1]);
     }
 }
 
 knightMoves([0, 0], [3, 3]);
 knightMoves([0, 0], [7, 7]);
 knightMoves([7, 7], [3, 3]);
-knightMoves([1, 7], [0, 0]);
+knightMoves([1, 7], [-1, 0]);
