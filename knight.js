@@ -72,13 +72,13 @@ function createBoard(size) {
 }
 
 const gameBoard = createBoard(8);
-console.log(gameBoard);
+// console.log(gameBoard);
 
 
 class Square {
-    constructor(coord, prev) {
+    constructor(coord, parent) {
         this.coord = coord;
-        this.prev = prev;
+        this.parent = parent;
     }
 }
 
@@ -104,17 +104,33 @@ class Square {
 
 
 
-// function getNextPossibleMoves(currentPos) {
-//     const nextPossibleMoves = [
-//         [currentPos[0] + 1, currentPos[1] + 2],
-//         [currentPos[0] + 2, currentPos[1] + 1],
-//         [currentPos[0] - 1, currentPos[1] - 2],
-//         [currentPos[0] - 2, currentPos[1] - 1],
-//         [currentPos[0] + 1, currentPos[1] - 2],
-//         [currentPos[0] - 2, currentPos[1] + 1],
-//         [currentPos[0] + 2, currentPos[1] - 1],
-//         [currentPos[0] - 1, currentPos[1] + 2]
-//     ].filter(move => (move[0] >= 0 && move[0] <= 7) && (move[1] >= 0) && move[1] <= 7);
+function getPossibleNextMoves(currentSquare, visited) {
 
-//     return nextPossibleMoves;
-// }
+    const directions = [
+        [1, 2], [2, 1], [2, -1], [1, -2],
+        [-1, -2], [-2, -1], [-2, 1], [-1, 2]
+    ];
+
+    let possibleNextMoves = [];
+
+    for (let i = 0; i < directions.length; i++) {
+        let coord = [currentSquare.coord[0] + directions[i][0], currentSquare.coord[1] + directions[i][1]];
+
+        if (isInBoard(coord) && !isVisited(coord, visited)) {
+            const child = new Square(coord, currentSquare);
+            possibleNextMoves.push(child);
+        }
+    }
+    
+    function isInBoard(coord) {
+        return (coord[0] >= 0 && coord[0] < 8) && (coord[1] >= 0 && coord[1] < 8);
+    }
+
+    function isVisited(coord, visited) {
+        return visited.some(square => square.coord[0] === coord[0] && square.coord[1] === coord[1]);
+    }
+
+    return possibleNextMoves;
+}
+
+console.log(getPossibleNextMoves({coord: [0, 0], parent: null}, []));
