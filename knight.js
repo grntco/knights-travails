@@ -1,62 +1,3 @@
-// function knightMoves(start, end) {
-//     const nextPossibleMoves = getNextPossibleMoves(start);
-//     // console.log(nextPossibleMoves);
-
-//     // const nextMovesQ = [];
-//     // nextMovesQ.push(...nextPossibleMoves);
-//     // const allPathsHeights = [];
-
-//     // while (nextMovesQ !== 0) {
-//     //     let pathHeight = 0;
-//     //     while(!nextMovesQ.includes(end)) {
-//     //         let first = nextMovesQ[0];
-//     //         pathHeight++;
-//     //         knightMoves(first, end);
-//     //     }
-//     //     allPathsHeights.unshift(pathHeight);
-//     //     nextMovesQ.shift();
-//     // }
-
-//     // const _findShortestPath = function(moves, end) {
-//     //     const Q = [...moves];
-//     //     let pathHeight = 0;
- 
-//     //     while(Q.length > 0) {
-//     //         if (Q.includes(end)) {
-//     //             console.log(pathHeight);
-//     //             return;
-//     //         }
-//     //         Q.push(...getNextPossibleMoves(Q[0]));
-//     //         Q.shift();
-//     //         pathHeight++;
-//     //     }
-//     //     return 'Something aint right'
-
-//     // }
-//     // _findShortestPath(nextPossibleMoves, end);
-   
-//     // nextMovesQ.push(...nextPossibleMoves);
-
-//     // while(nextMovesQ.length !== 0) {
-//     //     let firstInQ = nextMovesQ.shift();
-//     //     if (firstInQ === end) {
-//     //         console.log(firstInQ);
-//     //         return;
-//     //     } else {
-//     //         knightMoves(firstInQ, end, nextMovesQ);
-//     //     }
-//     // }
-
-
-
-
-//     // if (start === end) {
-//     //     // reconstruct the path
-//     // }
-// }
-
-// knightMoves([0, 0], [3, 3]);
-
 function createBoard(size) {
     let board = [];
 
@@ -112,8 +53,6 @@ function getPossibleNextMoves(currentSquare, visited) {
 
     return possibleNextMoves;
 }
-// console.log(getPossibleNextMoves({coord: [0, 0], parent: null}, []));
-
 
 function knightMoves(start, end) {
     const rootSquare = new Square(start);
@@ -129,7 +68,10 @@ function knightMoves(start, end) {
                 path.unshift(node.coord);
                 node = node.parent;
             }
-            console.log(path);
+            console.log(`=> You made it in ${path.length} moves! Here's your path:`);
+            path.forEach(coord => {
+                console.log(`[${coord.toString().split(',').join(', ')}]`)
+            });
             return;
         }
         const children = getPossibleNextMoves(current, visited);
