@@ -121,29 +121,22 @@ function knightMoves(start, end) {
     let visited = [rootSquare];
     
     while(q.length > 0) {
-        let first = q[0];
-        if (first.coord[0] === end[0] && first.coord[1] === end[1]) {
-            // get the path and print it out
-            console.log(`Gotcha! The end coordinates are ${first.coord}`);
+        let current = q[0];
+        if (current.coord[0] === end[0] && current.coord[1] === end[1]) {
+            let path = [];
+            let node = current;
+            while(node) {
+                path.unshift(node.coord);
+                node = node.parent;
+            }
+            console.log(path);
             return;
         }
-
-        // get the children of first
-        const children = getPossibleNextMoves(first, visited);
-        console.log(children);
-        // add the children to the q and to visited
-        // children.forEach((child) => {
-        //     q.push(child);
-        //     visited.push(child);
-        // });
-
+        const children = getPossibleNextMoves(current, visited);
         q.push(...children);
         visited.push(...children);
-
-        // remove first from q
         q.shift();
-    
     }
 }
 
-knightMoves([0,0], [1, 2]);
+knightMoves([7, 7], [3, 3]);
