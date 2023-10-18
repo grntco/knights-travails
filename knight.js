@@ -13,7 +13,6 @@ function knightMoves(start, end) {
     while(q.length > 0) {
         let current = q[0];
         if (current.coord[0] === end[0] && current.coord[1] === end[1]) {
-            // If the end is reached, print out its previous path from its parent
             let path = [];
             let node = current;
             while(node) {
@@ -26,7 +25,6 @@ function knightMoves(start, end) {
             });
             return;
         }
-        // If the end is not reached, get the possible next moves of the current item in the q
         const children = getPossibleNextMoves(current, visited);
         q.push(...children);
         visited.push(...children);
@@ -39,7 +37,7 @@ function knightMoves(start, end) {
             [1, 2], [2, 1], [2, -1], [1, -2],
             [-1, -2], [-2, -1], [-2, 1], [-1, 2]
         ];
-        // Create children of currentSquare with only the next squares that are within the gameboard and have not yet been visited
+        
         for (let i = 0; i < directions.length; i++) {
             let coord = [currentSquare.coord[0] + directions[i][0], currentSquare.coord[1] + directions[i][1]];
     
@@ -48,34 +46,17 @@ function knightMoves(start, end) {
                 possibleNextMoves.push(child);
             }
         }
-        // Test whether coordinates are within the bounds of the gameboard or not
+        
         function isInBoard(coord) {
             return (coord[0] >= 0 && coord[0] < 8) && (coord[1] >= 0 && coord[1] < 8); // change to boardSize instead of 8 at some point
         }
-        // Test whether coordinates have been visited or not
+
         function isVisited(coord, visited) {
             return visited.some(square => square.coord[0] === coord[0] && square.coord[1] === coord[1]);
         }
         return possibleNextMoves;
     }
 }
-
-// const boardSize = 8;
-// const gameBoard = createBoard(boardSize);
-
-
-// function createBoard(size) {
-//     let board = [];
-//     for (let i = 0; i < size; i++) {
-//         let row = [];
-//         for (let j = 0; j < size; j++) {
-//             let square = [j, i];
-//             row.push(square)
-//         }
-//         board.push(row);
-//     };
-//     return board;
-// }
 
 knightMoves([0, 0], [3, 3]);
 knightMoves([0, 0], [7, 7]);
